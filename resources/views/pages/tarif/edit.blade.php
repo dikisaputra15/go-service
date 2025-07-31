@@ -15,6 +15,11 @@
             @method('PUT')
             <div class="card-body">
                  <div class="form-group">
+                    <label>Nama Jasa</label>
+                    <input type="text" class="form-control" name="nama_jasa" value="{{ $tarif->nama_jasa }}">
+                </div>
+
+                <div class="form-group">
                     <label>Harga Tarif Antar</label>
                     <input type="text" class="form-control" name="tarif" value="{{ $tarif->tarif_antar }}">
                 </div>

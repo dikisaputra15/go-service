@@ -28,7 +28,7 @@
 
             <form action="{{ url('proses-pembayaran') }}" method="POST">
             @csrf
-             <div class="form-group">
+             <div class="form-group" hidden>
                  <div class="col-lg-12">
                     <label for="petugas" class="form-label">Metode Pembayaran</label>
                         <div class="selectgroup w-100">

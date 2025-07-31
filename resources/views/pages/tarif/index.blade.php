@@ -15,6 +15,7 @@
                   <thead>
                   <tr>
                         <th>No</th>
+                        <th>Nama Jasa</th>
                         <th>Tarif</th>
                         <th>Action</th>
                   </tr>
@@ -26,6 +27,7 @@
                   @foreach ($tarif as $tar)
                     <tr>
                         <td>{{ $no++ }}</td>
+                        <td>{{$tar->nama_jasa}}</td>
                         <td>{{$tar->tarif_antar}}</td>
                         <td>
                             <div class="d-flex justify-content-center">

@@ -31,6 +31,7 @@ class TarifController extends Controller
     public function store(Request $request)
     {
         Tarif::create([
+            'nama_jasa' => $request->nama_jasa,
             'tarif_antar' => $request->tarif,
         ]);
 
@@ -63,6 +64,7 @@ class TarifController extends Controller
          $tarif = Tarif::findOrFail($id);
 
         // Update nilai dasar
+        $tarif->nama_jasa = $request->nama_jasa;
         $tarif->tarif_antar = $request->tarif;
          $tarif->save();
 
