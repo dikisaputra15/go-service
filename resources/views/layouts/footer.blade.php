@@ -1,5 +1,5 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2022 <a href="#">Jaka</a>.</strong>
+    <strong>Copyright &copy; 2025 <a href="#">Jaka</a>.</strong>
 </footer>
 
   <!-- Control Sidebar -->

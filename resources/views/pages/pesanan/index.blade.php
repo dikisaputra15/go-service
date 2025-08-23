@@ -27,7 +27,6 @@
                         <th>Tarif Jemput</th>
                         <th>Total Biaya</th>
                         <th>Status</th>
-                        <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -45,21 +44,6 @@
                         <td>{{$dat->tarif_antar}}</td>
                         <td>{{$dat->total_biaya}}</td>
                         <td>{{$dat->status_order}}</td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <?php
-                                    if($dat->status_order == 'unpaid'){ ?>
-
-                                        <a href='/pesan/{{$dat->id}}/bayar'
-                                            class="btn btn-sm btn-info btn-icon">
-                                            <i class="fas fa-edit"></i>
-                                            Bayar
-                                        </a>
-                                    <?php }else{ ?>
-                                            <p>selesai</p>
-                                    <?php } ?>
-                            </div>
-                        </td>
                     </tr>
                 @endforeach
                   </tbody>

@@ -40,16 +40,21 @@
                         <td>{{$dat->nama_jasa}}</td>
                         <td>{{$dat->tarif_antar}}</td>
                         <td>{{$dat->total_biaya}}</td>
-                        <td>{{$dat->status}}</td>
+                        <td>{{$dat->status_order}}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <?php if($dat->status != 'selesai') {?>
-                                <a href="/pesan/{{$dat->id}}/updatestatus"
+                                <?php if($dat->status_order === 'selesai (belum dibayar)') {?>
+                                    <a href="/pesan/{{$dat->id}}/bayar"
+                                    class="btn btn-sm btn-danger">
+                                    Bayar
+                                    </a>
+                                <?php }else if($dat->status_order === 'selesai (sudah dibayar)'){ ?>
+                                     <p>Selesai</p>
+                                <?php }else{ ?>
+                                    <a href="/pesan/{{$dat->id}}/updatestatus"
                                     class="btn btn-sm btn-info">
                                     update status
-                                </a>
-                                <?php }else{ ?>
-                                    <p>selesai</p>
+                                    </a>
                                 <?php } ?>
                             </div>
                         </td>

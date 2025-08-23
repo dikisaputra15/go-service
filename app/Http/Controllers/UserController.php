@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Saldoteknisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name');
-        return view('pages.users.create', compact('roles'));
+        $teknisis = DB::table('teknisis')->orderBy('id', 'desc')->get();
+        return view('pages.users.create', compact('roles','teknisis'));
     }
 
     public function store(Request $request)
@@ -31,6 +33,15 @@ class UserController extends Controller
         ]);
 
         $user->assignRole($request->role);
+
+        if($request->role == 'teknisi'){
+            $lastid = $user->id;
+            Saldoteknisi::create([
+                'user_id' => $lastid,
+                'teknisi_id' => $request->teknisi_id,
+                'saldo' => $request->saldo
+            ]);
+        }
 
         return redirect()->route('user.index')->with('alert-primary','Data Berhasil ditambah');
     }

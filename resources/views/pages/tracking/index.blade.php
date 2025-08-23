@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{$dat->name}}</td>
-                        <td>{{$dat->status}}</td>
+                        <td>{{$dat->status_order}}</td>
                     </tr>
                 @endforeach
                   </tbody>

@@ -40,7 +40,7 @@ class PesananController extends Controller
             'no_hp' => $request->no_hp,
             'deskripsi' => $request->deskripsi,
             'total_biaya' => $request->total_biaya,
-            'status_order' => 'unpaid',
+            'status_order' => 'teknisi dipesan',
         ]);
 
          return redirect('myorder')->with('alert-primary','Data Berhasil dikirim');
@@ -48,8 +48,11 @@ class PesananController extends Controller
 
     public function formbayar($id)
     {
-         $order = \App\Models\Orderteknisi::findOrFail($id);
-          return view('pages.pesanan.formbayar', compact('order'));
+         DB::table('orderteknisis')
+            ->where('id', $id)
+            ->update(['status_order' => 'selesai (sudah dibayar)']);
+
+        return redirect('pesananmasuk')->with('alert-primary','Pembayaran berhasil');
     }
 
      public function prosesbayar(Request $request)
@@ -88,12 +91,12 @@ class PesananController extends Controller
      public function pesananmasuk(Request $request)
     {
         $data = DB::table('orderteknisis')
-            ->join('trackingorders', 'trackingorders.order_teknisi_id', '=', 'orderteknisis.id')
             ->join('teknisis', 'teknisis.id', '=', 'orderteknisis.teknisi_id')
             ->join('users', 'users.id', '=', 'orderteknisis.user_id')
             ->join('jeniskerusakans', 'jeniskerusakans.id', '=', 'orderteknisis.jenis_kerusakan_id')
             ->join('tarifs', 'tarifs.id', '=', 'orderteknisis.tarif_id')
-            ->select('trackingorders.id','orderteknisis.nama_pelanggan', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya', 'trackingorders.status')
+            ->select('orderteknisis.id', 'orderteknisis.nama_pelanggan', 'orderteknisis.status_order', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya')
+            ->orderBy('orderteknisis.id', 'desc')
             ->get();
 
          return view('pages.pesanan.pesananmasuk', compact('data'));
@@ -101,28 +104,28 @@ class PesananController extends Controller
 
      public function formupdatestatus($id)
     {
-         $order = \App\Models\Trackingorder::findOrFail($id);
+         $order = \App\Models\Orderteknisi::findOrFail($id);
           return view('pages.pesanan.formupdatestatus', compact('order'));
     }
 
      public function prosesstatus(Request $request)
     {
-         DB::table('trackingorders')
+         DB::table('orderteknisis')
                         ->where('id', $request->id_track)
-                        ->update(['status' => $request->status]);
+                        ->update(['status_order' => $request->status]);
          return redirect('pesananmasuk')->with('alert-primary','Data Berhasil dikirim');
     }
 
      public function dataservice(Request $request)
     {
         $data = DB::table('orderteknisis')
-            ->join('trackingorders', 'trackingorders.order_teknisi_id', '=', 'orderteknisis.id')
             ->join('teknisis', 'teknisis.id', '=', 'orderteknisis.teknisi_id')
             ->join('users', 'users.id', '=', 'orderteknisis.user_id')
             ->join('jeniskerusakans', 'jeniskerusakans.id', '=', 'orderteknisis.jenis_kerusakan_id')
             ->join('tarifs', 'tarifs.id', '=', 'orderteknisis.tarif_id')
-            ->select('trackingorders.id','orderteknisis.nama_pelanggan', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya', 'trackingorders.status')
-            ->where('trackingorders.status', 'selesai')
+            ->select('orderteknisis.id', 'orderteknisis.nama_pelanggan', 'orderteknisis.status_order', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya')
+            ->where('orderteknisis.status_order', 'selesai (sudah dibayar)')
+            ->orderBy('orderteknisis.id', 'desc')
             ->get();
 
          return view('pages.pesanan.dataservice', compact('data'));
@@ -131,13 +134,12 @@ class PesananController extends Controller
      public function invoice($id)
     {
         $dat = DB::table('orderteknisis')
-            ->join('trackingorders', 'trackingorders.order_teknisi_id', '=', 'orderteknisis.id')
             ->join('teknisis', 'teknisis.id', '=', 'orderteknisis.teknisi_id')
             ->join('users', 'users.id', '=', 'orderteknisis.user_id')
             ->join('jeniskerusakans', 'jeniskerusakans.id', '=', 'orderteknisis.jenis_kerusakan_id')
             ->join('tarifs', 'tarifs.id', '=', 'orderteknisis.tarif_id')
-            ->select('trackingorders.id','orderteknisis.nama_pelanggan', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya', 'trackingorders.status')
-            ->where('trackingorders.id', $id)
+            ->select('orderteknisis.id', 'orderteknisis.nama_pelanggan', 'orderteknisis.status_order', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya')
+            ->where('orderteknisis.id', $id)
             ->first();
 
         return view('pages.pesanan.invoice', compact('dat'));
@@ -153,18 +155,23 @@ class PesananController extends Controller
          $start_date = $request->start_date;
         $end_date = $request->end_date;
 
+        $total = DB::table('orderteknisis')
+                ->where('status_order', 'selesai (sudah dibayar)')
+                ->whereBetween('tgl_order', [$start_date, $end_date])
+                ->sum('total_biaya');
+
+
          $pesanans = DB::table('orderteknisis')
-            ->join('trackingorders', 'trackingorders.order_teknisi_id', '=', 'orderteknisis.id')
             ->join('teknisis', 'teknisis.id', '=', 'orderteknisis.teknisi_id')
             ->join('users', 'users.id', '=', 'orderteknisis.user_id')
             ->join('jeniskerusakans', 'jeniskerusakans.id', '=', 'orderteknisis.jenis_kerusakan_id')
             ->join('tarifs', 'tarifs.id', '=', 'orderteknisis.tarif_id')
-            ->select('trackingorders.id', 'orderteknisis.tgl_order', 'orderteknisis.nama_pelanggan', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'orderteknisis.status_order', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya', 'trackingorders.status')
-            ->where('orderteknisis.status_order', 'paid')
+            ->select('orderteknisis.id', 'orderteknisis.tgl_order', 'orderteknisis.nama_pelanggan', 'orderteknisis.alamat_pelanggan', 'orderteknisis.total_biaya', 'orderteknisis.status_order', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya', 'orderteknisis.status_order')
+            ->where('orderteknisis.status_order', 'selesai (sudah dibayar)')
             ->whereBetween('orderteknisis.tgl_order', [$start_date, $end_date])
             ->get();
 
-         $pdf = PDF::loadView('lappenjualanpdf', compact('pesanans'));
+         $pdf = PDF::loadView('lappenjualanpdf', compact('pesanans','total'));
         $pdf->setPaper('A4', 'potrait');
         return $pdf->stream('lappenjualanpdf.pdf');
     }

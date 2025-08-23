@@ -27,7 +27,7 @@
   <tr>
 
     <td colspan="4" style="text-align: center;">Total Pendapatan</td>
-    <td>Rp. {{$pesan->total_biaya}}</td>
+    <td>Rp. {{$total}}</td>
   </tr>
 </table>
 

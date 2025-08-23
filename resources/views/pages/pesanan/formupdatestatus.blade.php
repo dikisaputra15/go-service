@@ -19,7 +19,12 @@
                 </div>
                 <div class="form-group">
                     <label>status</label>
-                    <input type="text" class="form-control" name="status" required>
+                    <select class="form-control" name="status">
+                        <option value="teknisi menjemput">teknisi menjemput</option>
+                        <option value="sedang dikerjakan">sedang dikerjakan</option>
+                        <option value="selesai (belum dibayar)">selesai (belum dibayar)</option>
+                        <option value="selesai (sudah dibayar)">selesai (sudah dibayar)</option>
+                    </select>
                 </div>
 
                 <div class="form-group">

@@ -40,7 +40,7 @@
                         <td>{{$dat->nama_jasa}}</td>
                         <td>{{$dat->tarif_antar}}</td>
                         <td>{{$dat->total_biaya}}</td>
-                        <td>{{$dat->status}}</td>
+                        <td>{{$dat->status_order}}</td>
                         <td>
                             <div class="d-flex justify-content-center">
 

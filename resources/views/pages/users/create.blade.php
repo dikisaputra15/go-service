@@ -47,6 +47,22 @@
 
                 </div>
 
+                 <div id="teknisiFields" style="display:none;">
+                    <div class="form-group">
+                        <label for="saldo">Isi Saldo</label>
+                        <input type="number" class="form-control" name="saldo" id="saldo" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="teknisi_id">Pilih Teknisi</label>
+                        <select name="teknisi_id" id="teknisi_id" class="form-control">
+                            <option value="">-- Pilih Teknisi --</option>
+                            @foreach($teknisis as $teknisi)
+                                <option value="{{ $teknisi->id }}">{{ $teknisi->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <button class="btn btn-primary">Submit</button>
                 </div>
@@ -60,5 +76,18 @@
 @endsection
 
 @push('service')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const roleSelect = document.getElementById('role');
+    const teknisiFields = document.getElementById('teknisiFields');
 
+    roleSelect.addEventListener('change', function () {
+        if (this.value === 'teknisi') {
+            teknisiFields.style.display = 'block';
+        } else {
+            teknisiFields.style.display = 'none';
+        }
+    });
+});
+</script>
 @endpush

@@ -20,8 +20,8 @@ class HomeController extends Controller
     public function dashboard()
     {
          $tempatservice = Teknisi::count();
-         $paid = Orderteknisi::where('status_order', 'paid')->count();
-         $unpaid = Orderteknisi::where('status_order', '!=', 'paid')->count();
+         $paid = Orderteknisi::where('status_order', 'selesai (sudah dibayar)')->count();
+         $unpaid = Orderteknisi::where('status_order', 'sedang dikerjakan')->count();
 
         return view('pages.dashboard', compact('tempatservice','paid','unpaid'));
     }
@@ -36,11 +36,11 @@ class HomeController extends Controller
          $id = auth()->user()->id;
 
          $data = DB::table('orderteknisis')
-            ->join('trackingorders', 'trackingorders.order_teknisi_id', '=', 'orderteknisis.id')
             ->join('teknisis', 'teknisis.id', '=', 'orderteknisis.teknisi_id')
             ->join('users', 'users.id', '=', 'orderteknisis.user_id')
-            ->select('orderteknisis.*', 'teknisis.name', 'trackingorders.status')
+            ->select('orderteknisis.*', 'teknisis.name')
             ->where('users.id', $id)
+            ->orderBy('orderteknisis.id', 'desc')
             ->get();
 
         return view('pages.tracking.index', compact('data'));
@@ -57,6 +57,7 @@ class HomeController extends Controller
             ->join('jeniskerusakans', 'jeniskerusakans.id', '=', 'orderteknisis.jenis_kerusakan_id')
             ->select('orderteknisis.*', 'teknisis.name', 'tarifs.nama_jasa', 'tarifs.tarif_antar', 'jeniskerusakans.jenis_kerusakan', 'jeniskerusakans.biaya')
             ->where('users.id', $id)
+            ->orderBy('orderteknisis.id', 'desc')
             ->get();
 
         return view('pages.pesanan.index', compact('data'));
@@ -88,6 +89,11 @@ class HomeController extends Controller
      public function welcome()
     {
         return view('welcome');
+    }
+
+     public function teknisi()
+    {
+         return view('pages.teknisi');
     }
 
 }

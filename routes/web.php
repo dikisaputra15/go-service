@@ -54,4 +54,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('lokasi', LokasiteknisiController::class);
     Route::resource('tarif', TarifController::class);
     Route::resource('jeniskerusakan', JeniskerusakanController::class);
+
+     Route::get('/teknisi', [App\Http\Controllers\HomeController::class, 'teknisi'])->name('teknisi');
 });

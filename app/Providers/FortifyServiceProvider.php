@@ -41,10 +41,10 @@ class FortifyServiceProvider extends ServiceProvider
                             : redirect()->intended(config('fortify.home'));
                     }
 
-                    if (Auth::user()->hasRole('owner')){
+                    if (Auth::user()->hasRole('teknisi')){
                         return $request->wantsJson()
                             ? response()->json(['two-factor' => false])
-                            : redirect()->intended(config('fortify.owner'));
+                            : redirect()->intended(config('fortify.teknisi'));
                     }
                 }
             }

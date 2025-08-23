@@ -24,6 +24,7 @@
             </a>
           </li>
 
+        @role('admin')
           <li class="nav-item">
             <a href="{{ Route('user.index') }}" class="nav-link">
               <i class="nav-icon far fa-user"></i>
@@ -86,6 +87,18 @@
               </p>
             </a>
           </li>
+        @endrole
+
+        @role('teknisi')
+          <li class="nav-item">
+            <a href="{{url('pesananmasuk')}}" class="nav-link">
+              <i class="nav-icon far fa-file"></i>
+              <p>
+                Pesanan Masuk
+              </p>
+            </a>
+          </li>
+        @endrole
 
         </ul>
       </nav>

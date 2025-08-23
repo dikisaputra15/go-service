@@ -77,7 +77,7 @@ return [
     // 'home' => '/home',
     'home' => RouteServiceProvider::HOME,
     'homeadmin' => RouteServiceProvider::HOMEADMIN,
-    'owner' => RouteServiceProvider::OWNER,
+    'teknisi' => RouteServiceProvider::TEKNISI,
 
     /*
     |--------------------------------------------------------------------------
